@@ -36,10 +36,13 @@ app.get('/api/wallet/:walletAddress', async (req, res) => {
   // console.log("backend here")
   try {
     const walletID = req.params.walletAddress;
+
+    //gets balance of the address
     const walletData = await axios.get(
 
       `https://api.etherscan.io/api?module=account&action=balance&address=${walletID}&tag=latest&apikey=${apiKey}`
     );
+    //gets
     const tx = await axios.get(
 
       `https://api.etherscan.io/api?module=account&action=txlist&address=${walletID}&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=${apiKey}`
@@ -70,10 +73,10 @@ app.post('/api/create-wallet', (req, res) => {
   try {
     var id = crypto.randomBytes(32).toString('hex');
     var privateKey = "0x" + id;
-    console.log("SAVE BUT DO NOT SHARE THIS:", privateKey);
+    //console.log("SAVE BUT DO NOT SHARE THIS:", privateKey);
 
     var wallet = new ethers.Wallet(privateKey);
-    console.log("Address: " + wallet.address);
+    //console.log("Address: " + wallet.address);
 
     const publicAddress = wallet.address;
     res.json({ publicAddress, privateKey });
@@ -104,7 +107,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 3000
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`)
 })
